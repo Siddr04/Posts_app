@@ -10,10 +10,14 @@ const db=mysql.createPool({
     database:'Posts_app'
 })
 
+
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors());
 app.use(express.json());
+//applying router as a middleware
+const postRouter=require('./routes/Posts');
 
+app.use("/",postRouter);
 
 app.listen(3024,()=>{
     console.log("Server started on port 3024");
