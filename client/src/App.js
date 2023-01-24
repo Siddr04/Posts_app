@@ -1,38 +1,23 @@
 // import logo from './logo.svg';
-import React from 'react';
-import './App.css';
-import {useEffect,useState} from "react";
-import axios from 'axios';
+import React from "react";
+import "./App.css";
+import Home from "./pages/Home";
+import { BrowserRouter as Router, Route, Routes ,Link} from "react-router-dom";
+import PageNotFound from "./pages/PageNotFound";
+import CreatePost from "./pages/CreatePost";
 function App() {
-  const [listofpost,setListofposts]=useState([]);
-
-  useEffect(()=>{
-    axios.get("http://localhost:3024/").then((response)=>{
-      // console.log(response);
-      setListofposts(response.data);
-      console.log(response.data);
-    })
-  },[])
-
   return (
-    <>
     <div className="App">
-      {listofpost.map((post)=>
-      <>
-
-        
-        
-          <div className='post'>
-            <div className='title'>{post.title}</div>
-            <div className='body'>{post.postText}</div>
-            <div className='footer'>{post.username}</div>
-          </div>
-        
-      </> 
-
-      )} 
+      <Router>
+        <Link to="/createPost">Post Something !!</Link>
+        <Link to="/">Home</Link>
+        <Routes>
+          <Route path="/" element={<Home />} exact />
+          <Route path="/createPost" element={<CreatePost />} exact />
+          <Route path='*' element={<PageNotFound />} />
+        </Routes>
+      </Router>
     </div>
-    </>
   );
 }
 
