@@ -20,8 +20,10 @@ router.get('/',(req,res)=>{
             console.log(err);
         }
         // res.json(result);
+        res.send(result);
         
     })
+    
 
 })
 
