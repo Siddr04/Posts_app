@@ -10,7 +10,7 @@ const Home = () => {
       axios.get("http://localhost:3024/").then((response)=>{
         // console.log(response);
         setListofposts(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       })
     },[])
   

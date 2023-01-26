@@ -38,6 +38,16 @@ router.post('/',(req,res)=>{
         }
         
     })
+    const sqlFetch="Select * from Posts;";
+    db.query(sqlFetch,(err,result)=>{
+        if(err)
+        {
+            console.log(err);
+        }
+        // res.json(result);
+        res.send(result);
+        
+    })
 })
 
 module.exports=router;
