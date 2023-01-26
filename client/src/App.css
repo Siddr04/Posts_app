@@ -32,7 +32,7 @@ body {
 .post .title {
   flex: 20%;
   border-bottom: 1px solid lightgray;
-  background-color: dodgerblue;
+  background-color:	#E00000 	;
   display: grid;
   place-content: center;
   color: white;
