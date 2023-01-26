@@ -9,8 +9,10 @@ function App() {
   return (
     <div className="App">
       <Router>
+        <div className="navbar">
         <Link to="/createPost">Post Something !!</Link>
         <Link to="/">Home</Link>
+        </div>
         <Routes>
           <Route path="/" element={<Home />} exact />
           <Route path="/createPost" element={<CreatePost />} exact />
