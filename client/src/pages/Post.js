@@ -18,10 +18,15 @@ const Post = () => {
   return (
     <>
       {postValue.map((post) => (
-        <div className='post'>
+        <div className='postPage'>
+          <div className='leftSide'>
+            <div className='post'>
           <div className='title'>{post.title}</div>
           <div className='body'>{post.postText}</div>
           <div className='footer'>{post.username}</div>
+          </div>
+          </div>
+          <div className='rightSide'>Comment</div>
         </div>
       ))}
     </>
