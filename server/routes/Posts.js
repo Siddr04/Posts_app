@@ -49,5 +49,20 @@ router.post('/',(req,res)=>{
         
     })
 })
+router.post('/post',(req,res)=>{
+
+    const{id}=req.body;
+    const sqlFetch="select * from Posts where id= ?";
+    db.query(sqlFetch,[id],(err,result)=>{
+        if(err)
+        {
+            console.log(err);
+        }
+        // console.log(id);
+        res.send(result);
+
+    })  
+    
+})
 
 module.exports=router;
