@@ -28,16 +28,28 @@ router.post('/',(req,res)=>{
 })
 router.post('/new',(req,res)=>{
 
-    const{Pid,commentBody,Username}=req.body;
+    const{commentBody,Pid,Username}=req.body;
     const sqlInsert="Insert into Comments (Pid,commentBody,Username) values (?,?,?);";
-    db.query(sqlInsert,[Pid,commentBody,Username],(err,result)=>{
+    db.query(sqlInsert,[Pid.id,commentBody,Username],(err,result)=>{
         if(err)
         {
             console.log(err);
         }
         
-    })  
-    // res.send("Working");
+    })
+    // console.log(commentBody);  
+    // console.log(Pid);  
+    // console.log(Username);  
+    const sqlFetch="select * from Comments where Pid= ?";
+    db.query(sqlFetch,[Pid.id],(err,result)=>{
+        if(err)
+        {
+            console.log(err);
+        }
+        // console.log(id);
+        res.send(result);
+
+    })
 
     
 })
