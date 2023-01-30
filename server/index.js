@@ -16,8 +16,10 @@ app.use(cors());
 app.use(express.json());
 //applying router as a middleware
 const postRouter=require('./routes/Posts');
+const commentsRouter=require('./routes/Comments');
 
 app.use("/",postRouter);
+app.use("/comments",commentsRouter);
 
 app.listen(3024,()=>{
     console.log("Server started on port 3024");
