@@ -1,9 +1,10 @@
-import React from "react";
+import React ,{useState}from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
 const SignUp = () => {
+  const[auth,setAuth]=useState(-1);
   const initialValues = {
     username: "",
     password: "",
@@ -15,12 +16,33 @@ const SignUp = () => {
     password: Yup.string().min(4).max(20).required(),
   });
   const onSubmit = (data) => {
-    axios.post("http://localhost:3024/users/registration", data).then((response) => {
-    //   navigate("/");
-        console.log(data);
-    });
+    let value1 = data.password;
+    let value2 = data.confirmPassword;
+    // console.log(value1);
+    // console.log(value2);
+    if (value1 === value2) {
+      axios
+        .post("http://localhost:3024/users/registration", data)
+        .then((response) => {
+          //   navigate("/");
+          setAuth(response.data.status);
+        });
+    }
+    else
+    {
+      setAuth(0);
+
+    }
   };
+  if(auth===1)
+  {
+      navigate("/");
+
+  }
   return (
+    <>
+    {auth===0 && <h3>Passwords don't match !!.</h3>}
+    
     <div className="createPostPage">
       <Formik
         initialValues={initialValues}
@@ -45,10 +67,20 @@ const SignUp = () => {
             autocomplete="off"
             type="password"
           />
+          <label>Confirm Password: </label>
+          <ErrorMessage name="password" component="span" />
+          <Field
+            id="inputCreatePost"
+            name="confirmPassword"
+            placeholder="Confirm password..."
+            autocomplete="off"
+            type="password"
+          />
           <button type="submit">SignUp</button>
         </Form>
       </Formik>
     </div>
+    </>
   );
 };
 

@@ -20,6 +20,8 @@ router.post("/registration", async (req, res) => {
     if (err) {
       console.log(err);
     }
+    res.json({status:1});
+
     // res.json("Working")
   });
 
