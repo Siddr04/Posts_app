@@ -17,9 +17,12 @@ app.use(express.json());
 //applying router as a middleware
 const postRouter=require('./routes/Posts');
 const commentsRouter=require('./routes/Comments');
+const usersRouter=require('./routes/Users');
 
 app.use("/",postRouter);
 app.use("/comments",commentsRouter);
+app.use("/users",usersRouter);
+
 
 app.listen(3024,()=>{
     console.log("Server started on port 3024");
