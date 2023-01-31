@@ -41,10 +41,10 @@ router.post("/login", async (req, res) => {
       result.length === 0 ||
       !(await bcrypt.compare(password, result[0].password))
     ) {
-      res.json("Incorrect password or Username");
+      res.json({status:1});
     } else {
       // const id=results[0].id;
-      res.json("Success");
+      res.json({status:0});
     }
   });
 
