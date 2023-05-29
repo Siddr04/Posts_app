@@ -6,7 +6,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
 
   const login = () => {
     axios
@@ -16,8 +16,10 @@ const Login = () => {
       })
       .then((response) => {
         if (response.data.error) {
-          setError(response.data.error);
-        } else if (response.data.accessToken) {
+          // setError(response.data.error);
+          alert(response.data.error);
+        } else 
+        {
           sessionStorage.setItem("accessToken", response.data.accessToken);
           navigate("/");
         }
@@ -27,7 +29,7 @@ const Login = () => {
 
   return (
     <div className="loginContainer">
-      {error && <h3>{error}</h3>}
+      {/* {error && <h3>{error}</h3>} */}
       <label>Username:</label>
       <input
         type="text"

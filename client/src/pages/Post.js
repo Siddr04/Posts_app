@@ -22,9 +22,22 @@ const Post = () => {
         commentBody: newComment,
         Pid: id,
         Username: username,
+      },
+      {
+        headers:{
+          accessToken:sessionStorage.getItem("accessToken"),
+        },
       })
       .then((response) => {
-        setcommentList(response.data);
+        if(response.data.error)
+        {
+          alert(response.data.error);
+        }
+        else
+        {
+          setcommentList(response.data);
+
+        }
         // console.log("Comment Added");
       });
     setnewComment("");
