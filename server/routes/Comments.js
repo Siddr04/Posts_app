@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+
 const mysql = require('mysql');
 const db=mysql.createPool({
     host:'localhost',
@@ -7,7 +8,7 @@ const db=mysql.createPool({
     password:'',
     database:'Posts_app'
 })
-
+const validateToken=require('../middlewares/AuthMiddleware');
 const router=express.Router();
 
 
@@ -26,7 +27,7 @@ router.post('/',(req,res)=>{
     })  
     
 })
-router.post('/new',(req,res)=>{
+router.post('/new',validateToken,(req,res)=>{
 
     const{commentBody,Pid,Username}=req.body;
     const sqlInsert="Insert into Comments (Pid,commentBody,Username) values (?,?,?);";
