@@ -20,7 +20,7 @@ const Login = () => {
           alert(response.data.error);
         } else 
         {
-          sessionStorage.setItem("accessToken", response.data.accessToken);
+          localStorage.setItem("accessToken", response.data.accessToken);
           navigate("/");
         }
       })
