@@ -6,7 +6,7 @@ const Post = () => {
   const [postValue, setPostValue] = useState([]);
   const [commentList, setcommentList] = useState([]);
   const [newComment, setnewComment] = useState("");
-  const [username, setUsername] = useState("");
+  // const [username, setUsername] = useState("");
   useEffect(() => {
     axios.post("http://localhost:3024/post", id).then((response) => {
       setPostValue(response.data);
@@ -21,7 +21,7 @@ const Post = () => {
       .post("http://localhost:3024/comments/new", {
         commentBody: newComment,
         Pid: id,
-        Username: username,
+        Username: "",
       },
       {
         headers:{
@@ -41,9 +41,9 @@ const Post = () => {
         // console.log("Comment Added");
       });
     setnewComment("");
-    setUsername("");
+    // setUsername("");
     console.log(newComment);
-    console.log(username);
+    // console.log(username);
   };
 
   if (!postValue.length) return <div>Loading...</div>;
@@ -70,7 +70,7 @@ const Post = () => {
                   setnewComment(event.target.value);
                 }}
               />
-              <input
+              {/* <input
                 type="text"
                 placeholder="Name"
                 value={username}
@@ -78,7 +78,7 @@ const Post = () => {
                 onChange={(event) => {
                   setUsername(event.target.value);
                 }}
-              />
+              /> */}
               <button onClick={addComment}>Add</button>
             </div>
             <div className="listOfComments">
