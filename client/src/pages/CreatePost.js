@@ -33,14 +33,14 @@ const CreatePost = () => {
                 
                 <label>Title: </label>
                 <ErrorMessage name="title" component="span"/>
-                <Field id='inputCreatePost' 
-                name='title' placeholder='My Post' autocomplete="off"/>
+                <Field id='inputTitlePost' 
+                name='title' placeholder='My Post' autoComplete="off"/>
                 <label>Post: </label>
                 <ErrorMessage name="postText" component="span"/>
-                <Field id='inputCreatePost' name='postText' placeholder='Whats on your mind ?' autocomplete="off"/>
+                <Field id='inputCreatePost' name='postText' placeholder='Whats on your mind ?' autoComplete="off"/>
                 <label>Name: </label>
                 <ErrorMessage name="username" component="span"/>
-                <Field id='inputCreatePost' name='username' placeholder='Sid' autocomplete="off"/>
+                <Field id='inputPostUsername' name='username' placeholder='Sid' autoComplete="off"/>
                 <button type="submit">Create Post</button>
             </Form>
         </Formik>
