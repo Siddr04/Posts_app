@@ -9,7 +9,7 @@ const db = mysql.createPool({
   database: "Posts_app",
 });
 const {sign} = require('jsonwebtoken');
-
+const validateToken=require('../middlewares/AuthMiddleware');
 const router = express.Router();
 router.post("/registration", async (req, res) => {
   const  Username=req.body.username;
@@ -58,4 +58,11 @@ router.post("/login", async (req, res) => {
 
   
 });
+
+router.get("/auth", validateToken, (req, res) => {
+  res.json({ status: "working" });
+});
+
 module.exports = router;
+
+
