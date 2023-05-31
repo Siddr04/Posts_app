@@ -13,20 +13,32 @@ import {AuthContext} from "./helpers/AuthContext";
 import axios from "axios";
 function App() {
   const [AuthState, setAuthState] = useState(false);
+  const [userName, setuserName] = useState("");
+
   useEffect(()=>{
     axios.get("http://localhost:3024/users/auth",{headers:{
       accessToken:localStorage.getItem("accessToken"),
     },}).then((response)=>{
+
       if(response.data.error)
       {
         setAuthState(false);
       }
       else
       {
+        setuserName(response.data.Username);
+        // console.log(response.data);
+
         setAuthState(true);
       }
     })
   },[])
+  
+  const logout=(()=>{
+    localStorage.removeItem("accessToken");
+    setAuthState(false);
+  })
+
   return (
     <div className="App">
       <AuthContext.Provider value={{ AuthState, setAuthState }}>
@@ -41,7 +53,11 @@ function App() {
               </>
             )}
             {AuthState && (
-              <button id="nav-btn">Logout</button>
+              <>
+                {userName && <div id='user-id'>Welcome, {userName}</div>}
+                <button id="nav-btn" onClick={logout}>Logout</button>
+
+              </>
             )}
           </div>
           <Routes>
