@@ -60,7 +60,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/auth", validateToken, (req, res) => {
-  res.json({ status: "working" });
+  res.json(req.body);
 });
 
 module.exports = router;

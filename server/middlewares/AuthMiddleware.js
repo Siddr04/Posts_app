@@ -11,6 +11,7 @@ const validateToken=((req,res,next)=>{
         if(validToken)
         {
             req.body.Username = validToken.username.trim();
+            req.user=validToken;
             next();
         }
         else{throw "You are actions are not authorized";}
