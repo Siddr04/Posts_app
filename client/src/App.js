@@ -10,13 +10,22 @@ import Post from "./pages/Post";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import {AuthContext} from "./helpers/AuthContext";
+import axios from "axios";
 function App() {
   const [AuthState, setAuthState] = useState(false);
   useEffect(()=>{
-    if(localStorage.getItem('accessToken'))
-    {
-      setAuthState(true);
-    }
+    axios.get("http://localhost:3024/users/auth",{headers:{
+      accessToken:localStorage.getItem("accessToken"),
+    },}).then((response)=>{
+      if(response.data.error)
+      {
+        setAuthState(false);
+      }
+      else
+      {
+        setAuthState(true);
+      }
+    })
   },[])
   return (
     <div className="App">
