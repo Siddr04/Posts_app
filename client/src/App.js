@@ -40,6 +40,9 @@ function App() {
                 <Link to="/signup">SignUp</Link>
               </>
             )}
+            {AuthState && (
+              <button id="nav-btn">Logout</button>
+            )}
           </div>
           <Routes>
             <Route path="/" element={<Home />} exact />
