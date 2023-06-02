@@ -55,7 +55,7 @@ router.post('/new',validateToken,(req,res)=>{
     
 })
 
-router.delete("/:postID/:commentID",validateToken,(req,res)=>{
+router.delete("/:postID/:commentID",validateToken,async(req,res)=>{
     const commentID=req.params.commentID;
     const Pid=req.params.postID;
     // console.log(Pid);
@@ -68,18 +68,11 @@ router.delete("/:postID/:commentID",validateToken,(req,res)=>{
         {
             console.log(err);
         }
-    })
-    const sqlFetch="select * from Comments where Pid= ?";
-    db.query(sqlFetch,[Pid],(err,result)=>{
-        if(err)
+        else
         {
-            console.log(err);
+            res.send({message:"Comment Deleted!"});
         }
-        res.send({
-            message: "Comment deleted!",
-            comments: result,
-          });
-
     })
+    
 })
 module.exports=router;
