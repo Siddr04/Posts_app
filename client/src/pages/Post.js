@@ -51,29 +51,29 @@ const Post = () => {
     // console.log(username);
   };
 
-  const deleteComment=(comment_id)=>{
-    
-    axios.delete(`http://localhost:3024/comments/${id.id}/${comment_id}`,{
-      headers:{
-        accessToken:localStorage.getItem("accessToken"),
-      },
-    }).then((response) => {
-      if(response.data.error)
-      {
-        alert(response.data.error);
-      }
-      else
-      {
-        // setUsername(response.data.Username)
-        setcommentList(response.data.comments);
-        alert(response.data.message);
-
-
-      }
-      // console.log("Comment Added");
-    });
-  setnewComment("");
-  }
+  const deleteComment = (comment_id) => {
+    axios
+      .delete(`http://localhost:3024/comments/${id.id}/${comment_id}`, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then((response) => {
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          setcommentList((prevComments) =>
+            prevComments.filter((comment) => comment.Cid !== comment_id)
+          );
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        // Handle error
+      });
+  };
+  
+  
 
   if (!postValue.length) return <div>Loading...</div>;
 
@@ -114,7 +114,7 @@ const Post = () => {
               {commentList.map((comment) => {
                 return (
                   <div
-                    key={comment.id}
+                    key={comment.Cid}
                     className="
                 comment"
                   >
