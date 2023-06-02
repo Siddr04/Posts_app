@@ -52,7 +52,7 @@ router.post("/login", async (req, res) => {
       // res.json(accessToken);
 
       // res.json({status:0});
-      res.json({accessToken });
+      res.json({token:accessToken ,username:Username,id:result[0].Uid});
     }
   });
 

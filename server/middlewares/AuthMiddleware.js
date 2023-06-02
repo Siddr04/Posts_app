@@ -11,6 +11,8 @@ const validateToken=((req,res,next)=>{
         if(validToken)
         {
             req.body.Username = validToken.username.trim();
+            // req.body.id = validToken.id;
+
             req.user=validToken;
             next();
         }
