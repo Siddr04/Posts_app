@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { AuthContext } from "../helpers/AuthContext";
 const Post = () => {
   const id = useParams();
   const [postValue, setPostValue] = useState([]);
   const [commentList, setcommentList] = useState([]);
   const [newComment, setnewComment] = useState("");
+  const {AuthState}=useContext(AuthContext);
+
   // const [username, setUsername] = useState("");
   useEffect(() => {
     axios.post("http://localhost:3024/post", id).then((response) => {
@@ -14,6 +17,7 @@ const Post = () => {
     axios.post("http://localhost:3024/comments", id).then((response) => {
       setcommentList(response.data);
       // console.log("Comment Added !")
+    
     });
   }, []);
   const addComment = () => {
@@ -35,6 +39,7 @@ const Post = () => {
         }
         else
         {
+          // setUsername(response.data.Username)
           setcommentList(response.data);
 
         }
@@ -46,6 +51,30 @@ const Post = () => {
     // console.log(username);
   };
 
+  const deleteComment=(comment_id)=>{
+    
+    axios.delete(`http://localhost:3024/comments/${id.id}/${comment_id}`,{
+      headers:{
+        accessToken:localStorage.getItem("accessToken"),
+      },
+    }).then((response) => {
+      if(response.data.error)
+      {
+        alert(response.data.error);
+      }
+      else
+      {
+        // setUsername(response.data.Username)
+        setcommentList(response.data.comments);
+        alert(response.data.message);
+
+
+      }
+      // console.log("Comment Added");
+    });
+  setnewComment("");
+  }
+
   if (!postValue.length) return <div>Loading...</div>;
 
   return (
@@ -53,7 +82,7 @@ const Post = () => {
       {postValue.map((post) => (
         <div className="postPage">
           <div className="leftSide">
-            <div className="post">
+            <div className="post" >
               <div className="title">{post.title}</div>
               <div className="body">{post.postText}</div>
               <div className="footer">{post.username}</div>
@@ -82,15 +111,16 @@ const Post = () => {
               <button onClick={addComment}>Add</button>
             </div>
             <div className="listOfComments">
-              {commentList.map((comment, key) => {
+              {commentList.map((comment) => {
                 return (
                   <div
-                    key={key}
+                    key={comment.id}
                     className="
                 comment"
                   >
                     {comment.commentBody}
                     <p>-{comment.Username}</p>
+                    {AuthState.username===comment.Username&&<button onClick={()=>{deleteComment(comment.Cid)}}>X</button>}
                   </div>
                 );
               })}

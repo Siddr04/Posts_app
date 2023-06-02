@@ -12,8 +12,8 @@ import SignUp from "./pages/SignUp";
 import {AuthContext} from "./helpers/AuthContext";
 import axios from "axios";
 function App() {
-  const [AuthState, setAuthState] = useState(false);
-  const [userName, setuserName] = useState("");
+  const [AuthState, setAuthState] = useState({username:"",id:0,status:false});
+  // const [userName, setuserName] = useState("");
 
   useEffect(()=>{
     axios.get("http://localhost:3024/users/auth",{headers:{
@@ -22,21 +22,23 @@ function App() {
 
       if(response.data.error)
       {
-        setAuthState(false);
+        setAuthState({...AuthState,status:false});
       }
       else
       {
-        setuserName(response.data.Username);
+        // setuserName(response.data.Username);
         // console.log(response.data);
 
-        setAuthState(true);
+        setAuthState({username:response.data.Username,id:response.data.Username,status:true});
+        // console.log(AuthState);
+
       }
     })
   },[])
   
   const logout=(()=>{
     localStorage.removeItem("accessToken");
-    setAuthState(false);
+    setAuthState({username:"",id:0,status:false});
   })
 
   return (
@@ -46,15 +48,15 @@ function App() {
           <div className="navbar">
             <Link to="/">Home</Link>
             <Link to="/createPost">New Post</Link>
-            {!AuthState && (
+            {!(AuthState.status) && (
               <>
                 <Link to="/login">Login</Link>
                 <Link to="/signup">SignUp</Link>
               </>
             )}
-            {AuthState && (
+            {AuthState.status && (
               <>
-                {userName && <div id='user-id'>Welcome, {userName}</div>}
+                {AuthState.status && <div id='user-id'>Welcome, {AuthState.username}</div>}
                 <button id="nav-btn" onClick={logout}>Logout</button>
 
               </>
