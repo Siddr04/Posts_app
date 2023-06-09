@@ -10,9 +10,25 @@ const db = mysql.createPool({
 
 const router = express.Router();
 
+// router.get('/', async (req, res) => {
+//   try {
+//     const sqlFetch = 'SELECT * FROM Posts;';
+//     const result = await queryAsync(sqlFetch);
+//     res.send(result);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json('Internal Server Error');
+//   }
+// });
 router.get('/', async (req, res) => {
   try {
-    const sqlFetch = 'SELECT * FROM Posts;';
+    const sqlFetch = `
+      SELECT Posts.*, COUNT(Likes.Post_ID) AS likes_count
+      FROM Posts
+      LEFT JOIN Likes ON Posts.id = Likes.Post_ID
+      GROUP BY Posts.id;
+    `;
+
     const result = await queryAsync(sqlFetch);
     res.send(result);
   } catch (error) {
@@ -20,6 +36,7 @@ router.get('/', async (req, res) => {
     res.status(500).json('Internal Server Error');
   }
 });
+
 
 router.post('/', async (req, res) => {
   try {

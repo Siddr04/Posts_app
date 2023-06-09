@@ -21,11 +21,11 @@ router.post("/", validateToken, async (req, res) => {
       if (result.length === 0) {
         const sqlInsert = "INSERT INTO Likes (Post_ID, User_ID) VALUES (?, ?)";
         await queryAsync(sqlInsert, [Post_ID, User_ID]);
-        res.json("Inserted");
+        res.json({liked:true});
       } else {
         const sqlDelete = "DELETE FROM Likes WHERE Post_ID = ? AND User_ID = ?";
         await queryAsync(sqlDelete, [Post_ID, User_ID]);
-        res.json("Like Deleted!!");
+        res.json({liked:false});
       }
     } catch (error) {
       console.log(error);
