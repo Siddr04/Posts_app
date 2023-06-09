@@ -1,66 +1,63 @@
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql');
-const db=mysql.createPool({
-    host:'localhost',
-    user:'root',
-    password:'',
-    database:'Posts_app'
-})
+const db = mysql.createPool({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'Posts_app'
+});
 
-const router=express.Router();
+const router = express.Router();
 
-router.get('/',(req,res)=>{
-    const sqlFetch="Select * from Posts;";
-    db.query(sqlFetch,(err,result)=>{
-        if(err)
-        {
-            console.log(err);
-        }
-        // res.json(result);
-        res.send(result);
-        
-    })
-    
+router.get('/', async (req, res) => {
+  try {
+    const sqlFetch = 'SELECT * FROM Posts;';
+    const result = await queryAsync(sqlFetch);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json('Internal Server Error');
+  }
+});
 
-})
+router.post('/', async (req, res) => {
+  try {
+    const { title, postText, username } = req.body;
+    const sqlInsert = 'INSERT INTO Posts (title, postText, username) VALUES (?, ?, ?);';
+    await queryAsync(sqlInsert, [title, postText, username]);
+    const sqlFetch = 'SELECT * FROM Posts;';
+    const result = await queryAsync(sqlFetch);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json('Internal Server Error');
+  }
+});
 
-router.post('/',(req,res)=>{
+router.post('/post', async (req, res) => {
+  try {
+    const { id } = req.body;
+    const sqlFetch = 'SELECT * FROM Posts WHERE id = ?;';
+    const result = await queryAsync(sqlFetch, [id]);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json('Internal Server Error');
+  }
+});
 
-    const{title,postText,username}=req.body;
-    const sqlInsert="Insert into Posts (title,postText,username) values (?,?,?);";
-    db.query(sqlInsert,[title,postText,username],(err,result)=>{
-        if(err)
-        {
-            console.log(err);
-        }
-        
-    })
-    const sqlFetch="Select * from Posts;";
-    db.query(sqlFetch,(err,result)=>{
-        if(err)
-        {
-            console.log(err);
-        }
-        // res.json(result);
-        res.send(result);
-        
-    })
-})
-router.post('/post',(req,res)=>{
+// Helper function to promisify the db.query method
+function queryAsync(sql, values) {
+  return new Promise((resolve, reject) => {
+    db.query(sql, values, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+}
 
-    const{id}=req.body;
-    const sqlFetch="select * from Posts where id= ?";
-    db.query(sqlFetch,[id],(err,result)=>{
-        if(err)
-        {
-            console.log(err);
-        }
-        // console.log(id);
-        res.send(result);
-
-    })  
-    
-})
-
-module.exports=router;
+module.exports = router;

@@ -18,10 +18,11 @@ app.use(express.json());
 const postRouter=require('./routes/Posts');
 const commentsRouter=require('./routes/Comments');
 const usersRouter=require('./routes/Users');
-
+const likesRouter=require('./routes/Likes');
 app.use("/",postRouter);
 app.use("/comments",commentsRouter);
 app.use("/users",usersRouter);
+app.use("/like",likesRouter);
 
 
 app.listen(3024,()=>{
