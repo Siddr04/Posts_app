@@ -3,6 +3,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 const Home = () => {
   const [listofpost, setListofposts] = useState([]);
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ const Home = () => {
       if(response.data.liked===true)
       {
         alert("You liked a post!");
+        
         setListofposts(listofpost.map((post)=>{
           if(post.id===post_id)
           {
@@ -41,7 +43,7 @@ const Home = () => {
       else
       {
         alert("You disliked a post!");
-
+        
         setListofposts(listofpost.map((post)=>{
           if(post.id===post_id)
           {
@@ -64,9 +66,14 @@ const Home = () => {
             <div className="title" onClick={() => navigate(`/post/${post.id}`)}>{post.title}</div>
             <div className="body" onClick={() => navigate(`/post/${post.id}`)}>{post.postText}</div>
             <div className="footer">
-              {post.username}
-              <button onClick={()=>{likePost(post.id)}}>Like</button>
-              <span>{post.likes_count}</span>
+              <div className="username">{post.username}</div>
+              <div className="buttons">
+                <ThumbUpAltIcon onClick={()=>{likePost(post.id)}} className="unlikeBttn"/>
+                {/* <ThumbUpAltIcon onClick={()=>{likePost(post.id)}} className="unlikeBttn"/> */}
+                 
+
+              </div>
+              <label>{post.likes_count}</label>
               </div>
           </div>
         </>
@@ -76,3 +83,6 @@ const Home = () => {
 };
 
 export default Home;
+
+
+

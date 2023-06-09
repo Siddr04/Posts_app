@@ -17,10 +17,11 @@ const CreatePost = () => {
 
     title: Yup.string().required(),
     postText :Yup.string().required(),
-    username:Yup.string().min(3).max(15).required()
   })
   const onSubmit=(data)=>{
-    axios.post("http://localhost:3024/",data).then((response)=>{
+    axios.post("http://localhost:3024/",data,{headers:{
+      accessToken:localStorage.getItem("accessToken")
+    }}).then((response)=>{
         // console.log(response);
         // setListofposts(response.data);
         navigate("/");
@@ -38,9 +39,9 @@ const CreatePost = () => {
                 <label>Post: </label>
                 <ErrorMessage name="postText" component="span"/>
                 <Field id='inputCreatePost' name='postText' placeholder='Whats on your mind ?' autoComplete="off"/>
-                <label>Name: </label>
+                {/* <label>Name: </label>
                 <ErrorMessage name="username" component="span"/>
-                <Field id='inputPostUsername' name='username' placeholder='Sid' autoComplete="off"/>
+                <Field id='inputPostUsername' name='username' placeholder='Sid' autoComplete="off"/> */}
                 <button type="submit">Create Post</button>
             </Form>
         </Formik>

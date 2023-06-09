@@ -138,6 +138,27 @@ body {
   border-bottom-right-radius: 10px;
   font-size: 14px;
 }
+.footer .username {
+  flex: 50%;
+}
+.footer .buttons {
+  flex: 50%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.likeBttn {
+  color: rgba(250, 250, 250, 0.8);
+}
+.unlikeBttn {
+  color: white;
+}
+
+.buttons label {
+  margin-right: 20px;
+  margin-left: 10px;
+}
 
 /* Create Post Page */
 
