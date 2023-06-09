@@ -7,6 +7,7 @@ const db = mysql.createPool({
   password: '',
   database: 'Posts_app'
 });
+const validateToken=require('../middlewares/AuthMiddleware');
 
 const router = express.Router();
 
@@ -38,9 +39,13 @@ router.get('/', async (req, res) => {
 });
 
 
-router.post('/', async (req, res) => {
+router.post('/', validateToken,async (req, res) => {
   try {
-    const { title, postText, username } = req.body;
+    // const { title, postText, username } = req.body;
+    // console.log(req.body);
+    const title=req.body.title;
+    const postText=req.body.postText;
+    const username=req.body.Username;
     const sqlInsert = 'INSERT INTO Posts (title, postText, username) VALUES (?, ?, ?);';
     await queryAsync(sqlInsert, [title, postText, username]);
     const sqlFetch = 'SELECT * FROM Posts;';
