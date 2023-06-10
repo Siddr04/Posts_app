@@ -68,6 +68,46 @@ router.post('/post', async (req, res) => {
     res.status(500).json('Internal Server Error');
   }
 });
+
+router.put("/:postID/title",validateToken,async(req,res)=>{
+  try{
+    const Pid=req.params.postID;
+    const newTitle=req.body.title;
+    const sqlUpdate="update Posts set title=? where id=?";
+
+    const result=await queryAsync(sqlUpdate,[newTitle,Pid]);
+    res.send({message:"Post Content Updated!"});
+  }catch(error)
+  {
+    console.log(error);
+    res.status(500).json('Internal Server Error');
+  }
+})
+router.put("/:postID/content",validateToken,async(req,res)=>{
+  try{
+    const Pid=req.params.postID;
+    const newContent=req.body.content;
+    const sqlUpdate="update Posts set postText=? where id=?";
+
+    const result=await queryAsync(sqlUpdate,[newContent,Pid]);
+    res.send({message:"Post Content Updated!"});
+  }catch(error)
+  {
+    console.log(error);
+    res.status(500).json('Internal Server Error');
+  }
+  
+
+  // db.query(sqlUpdate,[newContent,Pid],(err,result)=>{
+  //   if(err)
+  //   {
+  //     console.log(err);
+  //   }
+  //   else
+  //   {
+  //   }
+  // })
+})
 router.delete("/:postID",validateToken,async(req,res)=>{
   try {
     const Pid=req.params.postID;
