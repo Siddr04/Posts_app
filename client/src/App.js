@@ -2,18 +2,22 @@
 import React from "react";
 import "./App.css";
 import Home from "./pages/Home";
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Link ,useNavigate} from "react-router-dom";
 import { useState,useEffect } from "react";
 import PageNotFound from "./pages/PageNotFound";
 import CreatePost from "./pages/CreatePost";
 import Post from "./pages/Post";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import Profile from "./pages/Profile";
 import {AuthContext} from "./helpers/AuthContext";
 import axios from "axios";
+
+
 function App() {
   const [AuthState, setAuthState] = useState({username:"",id:0,status:false});
   // const [userName, setuserName] = useState("");
+  // const navigate=useNavigate();
 
   useEffect(()=>{
     axios.get("http://localhost:3024/users/auth",{headers:{
@@ -39,6 +43,7 @@ function App() {
   const logout=(()=>{
     localStorage.removeItem("accessToken");
     setAuthState({username:"",id:0,status:false});
+
   })
 
   return (
@@ -57,7 +62,9 @@ function App() {
             {AuthState.status && (
               <>
                 {AuthState.status && <div id='user-id'>Welcome, {AuthState.username}</div>}
-                <button id="nav-btn" onClick={logout}>Logout</button>
+                <Link id="nav-btn" onClick={logout} to="/">Logout</Link>
+                <Link id="profile-btn" to={`/${AuthState.username}` }>Profile</Link>
+
 
               </>
             )}
@@ -68,6 +75,8 @@ function App() {
             <Route path="/login" element={<Login />} exact />
             <Route path="/signup" element={<SignUp />} exact />
             <Route path="/post/:id" element={<Post />} exact />
+            <Route path="/:username" element={<Profile />} exact />
+
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </Router>
@@ -77,3 +86,4 @@ function App() {
 }
 
 export default App;
+
