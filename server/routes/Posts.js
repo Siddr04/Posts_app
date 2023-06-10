@@ -21,6 +21,24 @@ const router = express.Router();
 //     res.status(500).json('Internal Server Error');
 //   }
 // });
+router.get('/:username', async (req, res) => {
+  try {
+    const userName=req.params.username;
+    const sqlFetch = `
+      SELECT Posts.*, COUNT(Likes.Post_ID) AS likes_count
+      FROM Posts
+      LEFT JOIN Likes ON Posts.id = Likes.Post_ID
+      WHERE Posts.username = ?
+      GROUP BY Posts.id;
+    `;
+
+    const result = await queryAsync(sqlFetch,[userName]);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json('Internal Server Error');
+  }
+});
 router.get('/', async (req, res) => {
   try {
     const sqlFetch = `
