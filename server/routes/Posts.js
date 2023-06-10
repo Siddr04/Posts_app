@@ -68,7 +68,24 @@ router.post('/post', async (req, res) => {
     res.status(500).json('Internal Server Error');
   }
 });
+router.delete("/:postID",validateToken,async(req,res)=>{
+  try {
+    const Pid=req.params.postID;
 
+    const sqlDelete="delete from Posts where id=?";
+
+    const result = await queryAsync(sqlDelete, [Pid]);
+    res.send({message:"Post Deleted!!"});
+  } catch (error) {
+    console.log(error);
+    res.status(500).json('Internal Server Error');
+  }
+  
+
+
+  
+  
+})
 // Helper function to promisify the db.query method
 function queryAsync(sql, values) {
   return new Promise((resolve, reject) => {
