@@ -22,9 +22,16 @@ const CreatePost = () => {
     axios.post("http://localhost:3024/",data,{headers:{
       accessToken:localStorage.getItem("accessToken")
     }}).then((response)=>{
-        // console.log(response);
+        if(response.data.error)
+        {
+          alert(response.data.error);
+        }
+        else
+        {
+          navigate("/");
+
+        }
         // setListofposts(response.data);
-        navigate("/");
       })
   }
   return (

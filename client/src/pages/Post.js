@@ -1,13 +1,16 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../helpers/AuthContext";
+import { useNavigate } from "react-router-dom";
 const Post = () => {
+  const navigate = useNavigate();
+
   const id = useParams();
   const [postValue, setPostValue] = useState([]);
   const [commentList, setcommentList] = useState([]);
   const [newComment, setnewComment] = useState("");
-  const {AuthState}=useContext(AuthContext);
+  const { AuthState } = useContext(AuthContext);
 
   // const [username, setUsername] = useState("");
   useEffect(() => {
@@ -17,31 +20,29 @@ const Post = () => {
     axios.post("http://localhost:3024/comments", id).then((response) => {
       setcommentList(response.data);
       // console.log("Comment Added !")
-    
     });
   }, []);
   const addComment = () => {
     axios
-      .post("http://localhost:3024/comments/new", {
-        commentBody: newComment,
-        Pid: id,
-        Username: "",
-      },
-      {
-        headers:{
-          accessToken:localStorage.getItem("accessToken"),
+      .post(
+        "http://localhost:3024/comments/new",
+        {
+          commentBody: newComment,
+          Pid: id,
+          Username: "",
         },
-      })
-      .then((response) => {
-        if(response.data.error)
         {
-          alert(response.data.error);
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
         }
-        else
-        {
+      )
+      .then((response) => {
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
           // setUsername(response.data.Username)
           setcommentList(response.data);
-
         }
         // console.log("Comment Added");
       });
@@ -72,8 +73,25 @@ const Post = () => {
         // Handle error
       });
   };
-  
-  
+
+  const deletePost=()=>{
+    axios
+      .delete(`http://localhost:3024/${id.id}`, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      }).then((response)=>{
+        if(response.data.error)
+        {
+          alert(response.data.error);
+        }
+        else
+        {
+          alert(response.data.message);
+          navigate("/");
+        }
+      })
+  }
 
   if (!postValue.length) return <div>Loading...</div>;
 
@@ -82,10 +100,15 @@ const Post = () => {
       {postValue.map((post) => (
         <div className="postPage">
           <div className="leftSide">
-            <div className="post" >
+            <div className="post">
               <div className="title">{post.title}</div>
               <div className="body">{post.postText}</div>
-              <div className="footer">{post.username}</div>
+              <div className="footer">
+                {post.username}
+                {AuthState.username === post.username && (
+                  <button onClick={deletePost}>Delete Post</button>
+                )}
+              </div>
             </div>
           </div>
           <div className="rightSide">
@@ -120,7 +143,15 @@ const Post = () => {
                   >
                     {comment.commentBody}
                     <p>-{comment.Username}</p>
-                    {AuthState.username===comment.Username&&<button onClick={()=>{deleteComment(comment.Cid)}}>X</button>}
+                    {AuthState.username === comment.Username && (
+                      <button
+                        onClick={() => {
+                          deleteComment(comment.Cid);
+                        }}
+                      >
+                        X
+                      </button>
+                    )}
                   </div>
                 );
               })}

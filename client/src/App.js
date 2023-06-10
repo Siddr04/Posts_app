@@ -27,9 +27,9 @@ function App() {
       else
       {
         // setuserName(response.data.Username);
-        // console.log(response.data);
+        console.log(response.data);
 
-        setAuthState({username:response.data.Username,id:response.data.Username,status:true});
+        setAuthState({username:response.data.Username,id:response.data.id,status:true});
         // console.log(AuthState);
 
       }
