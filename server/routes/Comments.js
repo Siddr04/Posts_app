@@ -55,6 +55,22 @@ router.post('/new',validateToken,(req,res)=>{
     
 })
 
+router.put('/edit',validateToken,(req,res)=>{
+    const commentID=req.body.commentid;
+    const newComment=req.body.new_comment;
+    const sqlUpdate="update Comments set commentBody=? where Cid=?";
+    db.query(sqlUpdate,[newComment,commentID],(err,result)=>{
+        if(err)
+        {
+            console.log(err);
+        }
+        else
+        {
+            res.send({message:"Comment Edited Successfully"});
+        }
+    })
+})
+
 router.delete("/:postID/:commentID",validateToken,async(req,res)=>{
     const commentID=req.params.commentID;
     const Pid=req.params.postID;
