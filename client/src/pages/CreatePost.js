@@ -28,6 +28,8 @@ const CreatePost = () => {
         }
         else
         {
+          alert("You have created a new Post");
+
           navigate("/");
 
         }

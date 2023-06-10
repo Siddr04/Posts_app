@@ -74,25 +74,79 @@ const Post = () => {
       });
   };
 
-  const deletePost=()=>{
+  const deletePost = () => {
     axios
       .delete(`http://localhost:3024/${id.id}`, {
         headers: {
           accessToken: localStorage.getItem("accessToken"),
         },
-      }).then((response)=>{
-        if(response.data.error)
-        {
+      })
+      .then((response) => {
+        if (response.data.error) {
           alert(response.data.error);
-        }
-        else
-        {
+        } else {
           alert(response.data.message);
           navigate("/");
         }
-      })
-  }
+      });
+  };
 
+  const editPost = (option) => {
+    if (option === "title") {
+      let newTitle = prompt("Enter New Title:");
+      axios
+        .put(
+          `http://localhost:3024/${id.id}/title`,
+          {
+            title: newTitle,
+          },
+          {
+            headers: {
+              accessToken: localStorage.getItem("accessToken"),
+            },
+          }
+        )
+        .then((response) => {
+          if (response.data.error) {
+            alert(response.data.error);
+          } else {
+            alert(response.data.message);
+          }
+        });
+      setPostValue((prevPostValue) =>
+        prevPostValue.map((post) => {
+          return { ...post, title: newTitle };
+        })
+      );
+    } else {
+      let newBodyText = prompt("Enter New content:");
+      axios
+        .put(
+          `http://localhost:3024/${id.id}/content`,
+          {
+            content: newBodyText,
+          },
+          {
+            headers: {
+              accessToken: localStorage.getItem("accessToken"),
+            },
+          }
+        )
+        .then((response) => {
+          if (response.data.error) {
+            alert(response.data.error);
+          } else {
+            alert(response.data.message);
+          }
+        });
+      // setPostValue({...postValue,postText:newBodyText});
+      setPostValue((prevPostValue) =>
+        prevPostValue.map((post) => {
+          return { ...post, postText: newBodyText };
+        })
+      );
+    }
+  };
   if (!postValue.length) return <div>Loading...</div>;
 
   return (
@@ -101,8 +155,26 @@ const Post = () => {
         <div className="postPage">
           <div className="leftSide">
             <div className="post">
-              <div className="title">{post.title}</div>
-              <div className="body">{post.postText}</div>
+              <div
+                className="title"
+                onClick={() => {
+                  if (AuthState.username === post.username) {
+                    editPost("title");
+                  }
+                }}
+              >
+                {post.title}
+              </div>
+              <div
+                className="body"
+                onClick={() => {
+                  if (AuthState.username === post.username) {
+                    editPost("body");
+                  }
+                }}
+              >
+                {post.postText}
+              </div>
               <div className="footer">
                 {post.username}
                 {AuthState.username === post.username && (
