@@ -51,6 +51,40 @@ const Post = () => {
     console.log(newComment);
     // console.log(username);
   };
+  const editComment=(commentId)=>{
+    let newComment = prompt("Enter New comment:");
+    axios
+        .put(
+          "http://localhost:3024/comments/edit",
+          {
+            commentid:commentId,
+            new_comment:newComment
+          },
+          {
+            headers: {
+              accessToken: localStorage.getItem("accessToken"),
+            },
+          }
+        ).then((response)=>{
+          if(response.data.error)
+          {
+            alert(response.data.error);
+          }
+          else
+          {
+            alert(response.data.message);
+            setcommentList((prevcommentList) =>
+            prevcommentList.map((comment) => {
+                if(comment.Cid===commentId)
+                {
+                  return {...comment,commentBody:newComment};
+                }
+                // return { ...post, postText: newBodyText };
+              })
+            );
+          }
+        })
+  }
 
   const deleteComment = (comment_id) => {
     axios
@@ -147,6 +181,8 @@ const Post = () => {
       );
     }
   };
+
+ 
   if (!postValue.length) return <div>Loading...</div>;
 
   return (
@@ -216,6 +252,7 @@ const Post = () => {
                     {comment.commentBody}
                     <p>-{comment.Username}</p>
                     {AuthState.username === comment.Username && (
+                      <>
                       <button
                         onClick={() => {
                           deleteComment(comment.Cid);
@@ -223,6 +260,14 @@ const Post = () => {
                       >
                         X
                       </button>
+                      <button
+                        onClick={() => {
+                          editComment(comment.Cid);
+                        }}
+                      >
+                        Edit
+                      </button>
+                      </>
                     )}
                   </div>
                 );
