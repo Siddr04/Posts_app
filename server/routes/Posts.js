@@ -79,7 +79,13 @@ router.post("/", validateToken, async (req, res) => {
 router.post("/post", async (req, res) => {
   try {
     const { id } = req.body;
-    const sqlFetch = "SELECT * FROM Posts WHERE id = ?;";
+    const sqlFetch = `
+      SELECT Posts.*, COUNT(Likes.Post_ID) AS likes_count
+      FROM Posts
+      LEFT JOIN Likes ON Posts.id = Likes.Post_ID
+      WHERE Posts.id = ?
+      GROUP BY Posts.id;
+    `;
     const result = await queryAsync(sqlFetch, [id]);
     res.send(result);
   } catch (error) {
