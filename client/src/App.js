@@ -60,9 +60,13 @@ function App() {
                 <Link to="/signup">SignUp</Link>
               </>
             )}
+              {/* {AuthState.status===false && <div id='no-login-id'>Welcome</div>} */}
+
             {AuthState.status && (
               <>
+
                 {AuthState.status && <div id='user-id'>Welcome, {AuthState.username}</div>}
+                
                 <Link id="nav-btn" onClick={logout} to="/">Logout</Link>
                 <Link id="profile-btn" to={`/${AuthState.username}` }>Profile</Link>
 
@@ -70,6 +74,8 @@ function App() {
               </>
             )}
           </div>
+          {AuthState.status===false && <div id='no-login-id'>Welcome</div>}
+
           <Routes>
             <Route path="/" element={<Home />} exact />
             <Route path="/createPost" element={<CreatePost />} exact />

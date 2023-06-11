@@ -24,8 +24,18 @@ const SignUp = () => {
       axios
         .post("http://localhost:3024/users/registration", data)
         .then((response) => {
-          //   navigate("/");
-          setAuth(response.data.status);
+          if(response.data.error)
+          {
+            alert(response.data.error);
+          }
+          else
+          {
+            alert(response.data.message);
+            navigate("/");
+            
+
+          }
+          
         });
     }
     else
@@ -34,11 +44,6 @@ const SignUp = () => {
 
     }
   };
-  if(auth===1)
-  {
-      navigate("/");
-
-  }
   return (
     <>
     {auth===0 && <h3>Passwords don't match !!.</h3>}

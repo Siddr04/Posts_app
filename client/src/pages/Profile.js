@@ -7,7 +7,7 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import { AuthContext } from "../helpers/AuthContext";
 
 const Profile = () => {
-  const { AuthState } = useContext(AuthContext);
+  const { AuthState,setAuthState } = useContext(AuthContext);
   const userName = useParams().username;
   // console.log(userName);
   
@@ -74,11 +74,40 @@ const Profile = () => {
         }
       });
   };
+
+  const updateUser=()=>{
+    let newUsername=prompt("Enter new Username: ");
+    axios
+      .put(
+        "http://localhost:3024/users/changeUsername",
+        {
+          newUsername:newUsername
+        },
+        {
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        }
+      ).then((response)=>{
+        if(response.data.error)
+        {
+            alert(response.data.error);
+            
+        }
+        else
+        {
+            alert(response.data.message);
+            localStorage.removeItem("accessToken");
+            setAuthState({username:"",id:0,status:false});
+            navigate("/login");
+        }
+      })
+  };
   return (
     <>
     
     {AuthState.username===userName && <button id="change-password-btn" onClick={() => navigate(`/changePassword`)} >change password</button>}
-    {AuthState.username===userName && <button id="change-username-btn" onClick={() => navigate(`/changeUsername`)}>change username</button>}
+    {AuthState.username===userName && <button id="change-username-btn" onClick={updateUser}>change username</button>}
 
       {listofpost.map((post) => (
         <>
