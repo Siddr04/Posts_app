@@ -3,6 +3,8 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../helpers/AuthContext";
 import { useNavigate } from "react-router-dom";
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+
 const Post = () => {
   const navigate = useNavigate();
 
@@ -128,6 +130,7 @@ const Post = () => {
   const editPost = (option) => {
     if (option === "title") {
       let newTitle = prompt("Enter New Title:");
+      if(!newTitle){return;}
       axios
         .put(
           `http://localhost:3024/${id.id}/title`,
@@ -154,6 +157,7 @@ const Post = () => {
       );
     } else {
       let newBodyText = prompt("Enter New content:");
+      if(!newBodyText){return;}
       axios
         .put(
           `http://localhost:3024/${id.id}/content`,
@@ -181,7 +185,49 @@ const Post = () => {
       );
     }
   };
-
+  const likePost=(post_id)=>{
+    axios.post("http://localhost:3024/like",{Post_ID:post_id},{headers:{
+      accessToken:localStorage.getItem("accessToken")
+    }}).then((response)=>{
+      // console.log(response);
+      if(response.data.error)
+      {
+        alert(response.data.error);
+        return;
+      }
+      if(response.data.liked===true)
+      {
+        alert("You liked a post!");
+        
+        setPostValue(postValue.map((post)=>{
+          if(post.id===post_id)
+          {
+            return{...post,likes_count:post.likes_count+1};
+          }
+          else
+          {
+            return post;
+          }
+        }))
+      }
+      else
+      {
+        alert("You disliked a post!");
+        
+        setPostValue(postValue.map((post)=>{
+          if(post.id===post_id)
+          {
+            return{...post,likes_count:post.likes_count-1};
+          }
+          else
+          {
+            return post;
+          }
+        }))
+      }
+      
+    })
+  }
  
   if (!postValue.length) return <div>Loading...</div>;
 
@@ -216,6 +262,11 @@ const Post = () => {
                 {AuthState.username === post.username && (
                   <button onClick={deletePost}>Delete Post</button>
                 )}
+                <div className="buttons">
+                <ThumbUpAltIcon onClick={()=>{likePost(post.id)}} className="unlikeBttn"/>
+                
+              </div>
+              <label>{post.likes_count}</label>
               </div>
             </div>
           </div>

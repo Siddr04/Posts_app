@@ -69,9 +69,6 @@ const Home = () => {
               <div className="username" onClick={() => navigate(`/${post.username}`)}>{post.username}</div>
               <div className="buttons">
                 <ThumbUpAltIcon onClick={()=>{likePost(post.id)}} className="unlikeBttn"/>
-                {/* <ThumbUpAltIcon onClick={()=>{likePost(post.id)}} className="unlikeBttn"/> */}
-                 
-
               </div>
               <label>{post.likes_count}</label>
               </div>
