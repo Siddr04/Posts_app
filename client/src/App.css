@@ -372,3 +372,41 @@ span {
 .loginContainer button:hover {
   background-color: #007acc;
 }
+/*Profile page*/
+#change-password-btn {
+  position: absolute;
+  top: 90px; /* Adjust the top position as needed */
+  right: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#change-username-btn {
+  position: absolute;
+  top: 140px; /* Adjust the top position as needed */
+  right: 10px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+#change-password-btn:hover,
+#change-username-btn:hover {
+  opacity: 0.8;
+}
+@media (max-width: 768px) {
+  #change-password-btn,
+  #change-username-btn {
+    position: static;
+    margin-top: 20px; /* Adjust the margin-top as needed */
+  }
+}
+

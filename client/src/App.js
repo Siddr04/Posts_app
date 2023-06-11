@@ -10,6 +10,7 @@ import Post from "./pages/Post";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
+import ChagePassword from "./pages/ChagePassword";
 import {AuthContext} from "./helpers/AuthContext";
 import axios from "axios";
 
@@ -75,9 +76,11 @@ function App() {
             <Route path="/login" element={<Login />} exact />
             <Route path="/signup" element={<SignUp />} exact />
             <Route path="/post/:id" element={<Post />} exact />
+            <Route path="/changePassword" element={<ChagePassword />} exact />
+            <Route path="*" element={<PageNotFound />} />
+
             <Route path="/:username" element={<Profile />} exact />
 
-            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </Router>
       </AuthContext.Provider>

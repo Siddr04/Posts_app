@@ -2,13 +2,15 @@ import React from "react";
 // import './App.css';
 import { useEffect, useState,useContext } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,useParams} from "react-router-dom";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import { AuthContext } from "../helpers/AuthContext";
 
 const Profile = () => {
   const { AuthState } = useContext(AuthContext);
-  const userName = AuthState.username;
+  const userName = useParams().username;
+  // console.log(userName);
+  
 
   const [listofpost, setListofposts] = useState([]);
   const navigate = useNavigate();
@@ -16,10 +18,18 @@ const Profile = () => {
   useEffect(() => {
     axios.get(`http://localhost:3024/${userName}`).then((response) => {
       // console.log(response);
-      setListofposts(response.data);
+      if(response.data.length===0)
+      {
+        navigate('*');
+      }
+      else
+      {
+        setListofposts(response.data);
+
+      }
     //   console.log(response.data);
     });
-  }, []);
+  }, [userName]);
   const likePost = (post_id) => {
     axios
       .post(
@@ -66,6 +76,10 @@ const Profile = () => {
   };
   return (
     <>
+    
+    {AuthState.username===userName && <button id="change-password-btn" onClick={() => navigate(`/changePassword`)} >change password</button>}
+    {AuthState.username===userName && <button id="change-username-btn" onClick={() => navigate(`/changeUsername`)}>change username</button>}
+
       {listofpost.map((post) => (
         <>
           <div className="post">

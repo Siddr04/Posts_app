@@ -66,7 +66,7 @@ const Home = () => {
             <div className="title" onClick={() => navigate(`/post/${post.id}`)}>{post.title}</div>
             <div className="body" onClick={() => navigate(`/post/${post.id}`)}>{post.postText}</div>
             <div className="footer">
-              <div className="username">{post.username}</div>
+              <div className="username" onClick={() => navigate(`/${post.username}`)}>{post.username}</div>
               <div className="buttons">
                 <ThumbUpAltIcon onClick={()=>{likePost(post.id)}} className="unlikeBttn"/>
                 {/* <ThumbUpAltIcon onClick={()=>{likePost(post.id)}} className="unlikeBttn"/> */}
