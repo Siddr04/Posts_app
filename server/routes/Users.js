@@ -58,7 +58,41 @@ router.post("/login", async (req, res) => {
 
   
 });
+router.put("/changePassword",validateToken,async(req,res)=>{
+  const oldpassWord=req.body.oldpassWord;
+  const newpassWord=req.body.newpassWord;
+  const userName=req.body.Username;
+  const sqlfetch="Select password from Users where username= ?;";
+  
 
+  
+  db.query(sqlfetch, [userName], async (err, result) => {
+    // console.log(result);
+    if (
+      result.length === 0 ||
+      !(await bcrypt.compare(oldpassWord, result[0].password))
+    ) {
+      res.json({error:"Incorrect old password!!"});
+    }
+    else
+    {
+      let hashedPassword = await bcrypt.hash(newpassWord, 8);
+      const sqlUpdate="update Users set password=? where username=?";
+      db.query(sqlUpdate,[hashedPassword,userName],(err,result)=>{
+        if(err)
+        {
+          res.send({error:"Internal Server error! Dont worry :)"});
+        }
+        else
+        {
+          res.send({message:"Password updated successfully!"});
+
+        }
+      })
+    } 
+  });
+
+})
 router.get("/auth", validateToken, (req, res) => {
   res.json(req.body);
 });
